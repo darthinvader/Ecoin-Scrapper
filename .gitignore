@@ -5914,3 +5914,11 @@ venv1/Lib/site-packages/pip/_vendor/requests/packages/chardet/big5prober\.py
 venv1/
 
 venv2/
+
+\.idea/
+
+TesterPackage/
+
+CoinData/__pycache__/Binance\.cpython-36\.pyc
+
+CoinData/__pycache__/getters\.cpython-36\.pyc
