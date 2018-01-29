@@ -1,4 +1,6 @@
-import CoinData.Binance as bnc
+import CoinData.Exchanges as bnc
+
+
 def binanceCandlePlot():
 
 
@@ -14,14 +16,14 @@ def binanceCandlePlot():
     startDate = '2017-12-23 00:00:00'
 
     # Then we make the date into binance Timestamp(Unix epoch +3 0s at the end)
-    since = bnc.dateToTimestamps(startDate)
+    since = bnc.date2Timestamp(startDate)
 
     # Then we specify the ammount of data we want(max 500 min 3)
 
     limit = 40
     ohlcv = bnc.getOhlcv(symbol,timeframe,since,limit)
 
-    # All the data in ohlcv have default values that can be used(check CoinData/Binance.py)
+    # All the data in ohlcv have default values that can be used(check CoinData/Exchanges.py)
 
     # Now that we have ohlcv we can use it
     # ohlcv stands for (open high low close volume)
@@ -33,11 +35,13 @@ def binanceCandlePlot():
     title = "ETH and BTC"
     bnc.candlestickPlot(ohlcv, title)
 
+
 def binancePlots():
 
     # Let's make some basic plots now with our binance plotter
     # As before we get our ohlcv
     ohlcv = bnc.getOhlcv(limit=100, timeframe='15m')
+
     # Now we are going to extract from ohlcv every subarray (component)
     timestamp = bnc.getTimestamp(ohlcv)
     openPrice = bnc.getOpen(ohlcv)
@@ -45,6 +49,7 @@ def binancePlots():
     low = bnc.getLow(ohlcv)
     close = bnc.getClose(ohlcv)
     volume = bnc.getVolume(ohlcv)
+
     # We are now plotting each different subbaray based on time
     bnc.timeDataPlot(timestamp, openPrice)
     bnc.timeDataPlot(timestamp, high)

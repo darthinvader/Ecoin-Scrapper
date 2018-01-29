@@ -1,4 +1,8 @@
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from matplotlib.finance import candlestick_ohlc
+from CoinData.TimeConvert import unixEpoch2Date, timestamp2num
+
 
 # ScatterPlot
 # Arguments:
@@ -19,3 +23,60 @@ def scatterPlot(close1, close2, xlabel="", ylabel="", title="Correlation Plot", 
     plt.ylabel(ylabel)
     plt.title(title)
     plt.show()
+
+# formatMake is a function used for Plots
+# not to be used from outside
+# it takes the timestamp and returns the format in which the date is shown
+
+
+def formatMake(ohlcv):
+    timeframes = len(ohlcv)
+    timedif = ohlcv[0][0] - ohlcv[0][1]
+    timeline = timedif * timeframes
+    if timeline <= 86400:  # 1440 = 24 hours * 60 minutes *60 seconds
+        dateFormat = '%H:%M'
+    elif timeline <= 2592000:  # 43200 = 30 days *24 hours *60 minutes *60 seconds
+        dateFormat = '%dd %Hh'
+    elif timeline <= 31104000:  # 518400 = 12 * 30 days *24 hours *60 minutes *60seconds
+        dateFormat = '%m-%d'
+    else:
+        dateFormat = '%Y-%m-%d'
+    return dateFormat
+
+
+# candlestickPlot
+# Arguments:
+# ohcvl containing the arrays of screenshots of data
+# the title of the candlestick chart
+# this function shows a candlestick chart of the data you gave (must be in ohlcv order)
+
+
+def candlestickPlot(ohlcv, title="stock"):
+
+    dateFormat = formatMake(ohlcv)
+    title += " begins: " + unixEpoch2Date(ohlcv[0][0])
+    widthMul = (ohlcv[0][0] - ohlcv[1][0]) / 60
+    ax1 = plt.subplot2grid((1, 1), (0, 0))
+    width = (widthMul * 0.005) / (len(ohlcv) + 5)
+    candlestick_ohlc(ax1, ohlcv, width=width, colorup='#00FF00', colordown='#FF0000')
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter(dateFormat))
+    plt.xlabel("Date")
+    plt.ylabel("Price")
+    plt.title(title)
+    plt.show()
+
+
+# timeDataPlot
+# Arguments:
+# ohlcv:containing the arrays of screenshots of data
+# The function shows a normal plot of the data relative to time
+
+
+def timeDataPlot(timestamp, data):
+    dateFormat = formatMake(timestamp)
+    ax1 = plt.subplot2grid((1, 1), (0, 0))
+    timestamp = timestamp2num(timestamp)
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter(dateFormat))
+    ax1.plot(timestamp, data)
+    plt.show()
+
