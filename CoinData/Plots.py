@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.finance import candlestick_ohlc
-from CoinData.TimeConvert import unixEpoch2Date, timestamp2num
-
+from CoinData import TimeConvert as Tc
+from CoinData import Unpack as Up
 
 # ScatterPlot
 # Arguments:
@@ -52,12 +52,12 @@ def formatMake(ohlcv):
 
 
 def candlestickPlot(ohlcv, title="stock"):
-
     dateFormat = formatMake(ohlcv)
-    title += " begins: " + unixEpoch2Date(ohlcv[0][0])
+    title += " begins: " + Tc.unixEpoch2Date(ohlcv[0][0])
     widthMul = (ohlcv[0][0] - ohlcv[1][0]) / 60
     ax1 = plt.subplot2grid((1, 1), (0, 0))
     width = (widthMul * 0.005) / (len(ohlcv) + 5)
+    ohlcv = ohclvForPlots(ohlcv)
     candlestick_ohlc(ax1, ohlcv, width=width, colorup='#00FF00', colordown='#FF0000')
     ax1.xaxis.set_major_formatter(mdates.DateFormatter(dateFormat))
     plt.xlabel("Date")
@@ -75,8 +75,16 @@ def candlestickPlot(ohlcv, title="stock"):
 def timeDataPlot(timestamp, data):
     dateFormat = formatMake(timestamp)
     ax1 = plt.subplot2grid((1, 1), (0, 0))
-    timestamp = timestamp2num(timestamp)
+    timestamp = Tc.timestamp2Num(timestamp)
     ax1.xaxis.set_major_formatter(mdates.DateFormatter(dateFormat))
     ax1.plot(timestamp, data)
     plt.show()
 
+
+def ohclvForPlots(ohlcv):
+    timestamp = Up.getTimestamp(ohlcv)
+    timestamp = Tc.timestamp2Num(timestamp)
+    size = len(ohlcv)
+    for i in range(0,size):
+        ohlcv[i][0] = timestamp[i]
+    return ohlcv

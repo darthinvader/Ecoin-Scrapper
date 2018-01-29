@@ -1,6 +1,6 @@
 import ccxt
 from CoinData import TimeConvert as Tc
-
+from CoinData import Unpack as Up
 timeJump = [60, 180, 300, 900, 1800, 3600, 7200, 14400, 21600, 28800, 43200, 86400, 259200, 604800, 2592000]
 timing = ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M']
 
@@ -16,19 +16,35 @@ timing = ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '
 # Each screenshot contains [Timestamp,Open,High,Low,Close,Volume]
 
 
-def getOhlcv(symbol='BTC/USDT', timeframe='1m', since=None, limit=500):
+def getBinanceOhlcv(symbol='BTC/USDT', timeframe='1m', since=None, limit=500):
     exchange = ccxt.binance()
     ohlcv = exchange.fetch_ohlcv(symbol, timeframe, since, limit)
+    timestamp = Up.getTimestamp(ohlcv)
+    timestamp = Tc.timestamp2UnixEpoch(timestamp)
+    size = len(ohlcv)
+    for i in range(0, size):
+        ohlcv[i][0] = timestamp[i]
     return ohlcv
 
+# getOhlcv
+# Arguments:
+# Symbol: "Coin/Coin or Fiat Currency" e.g "BTC/USDT","ETH/BTC" default:"BTC/USDT"
+# returns the Date which the data first appeared in Binance
 
-def getStartingDate(symbol='BTC/USDT'):
+
+def getBinanceStartingDate(symbol='BTC/USDT'):
     date1 = '2017-01-01 00:00:00'
     timestamp = Tc.date2Timestamp(date1)
     since = timestamp
-    ohlcv = getOhlcv(since=since, symbol=symbol, limit=1)
+    ohlcv = getBinanceOhlcv(since=since, symbol=symbol, limit=1)
     startDate = ohlcv[0][0]
     return startDate
+
+# getOhlcv
+# Arguments:
+# currDate: the date we have right now
+# timeframe: the ammount of time passed between each screenshot
+# returns the Date which the data first appeared in Binance
 
 
 def __advanceTimestamp(currDate, timeframe='1m'):
@@ -41,13 +57,21 @@ def __advanceTimestamp(currDate, timeframe='1m'):
         print("error")
 
 
+# BinanceData
+# Arguments:
+# Symbol: "Coin/Coin or Fiat Currency" e.g "BTC/USDT","ETH/BTC" default:"BTC/USDT"
+# timeframe: the amount of time passed between each screenshot of data e.g"1m","1h" default:"1m"
+# returns all the Data from the beginning till now of the selected coin in the selected timeframe
+# in a ohlcv data
+
+
 def BinanceData(symbol='BTC/USDT', timeframe='1m'):
-    startTimestamp = getStartingDate(symbol)
+    startTimestamp = getBinanceStartingDate(symbol)
     currTimestamp = startTimestamp
     ohlcv = []
     flag = True
     while flag:
-        currOhlcv = getOhlcv(symbol=symbol, since=currTimestamp, timeframe=timeframe)
+        currOhlcv = getBinanceOhlcv(symbol=symbol, since=currTimestamp, timeframe=timeframe)
         ohlcv.extend(currOhlcv)
         currTimestamp = __advanceTimestamp(currTimestamp, timeframe=timeframe)
         print(currTimestamp)

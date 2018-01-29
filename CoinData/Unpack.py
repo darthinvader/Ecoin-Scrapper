@@ -68,7 +68,7 @@ def getVolume(ohlcv):
 
 def refactorOhlcv(ohlcv):
     timestamp = getTimestamp(ohlcv)
-    timestamp = timestamp2num(timestamp)
+    timestamp = Tc.timestamp2num(timestamp)
     openPrice = getOpen(ohlcv)
     high = getHigh(ohlcv)
     low = getLow(ohlcv)

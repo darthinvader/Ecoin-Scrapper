@@ -1,8 +1,10 @@
-import CoinData.Exchanges as bnc
+from CoinData import TimeConvert as Tc
+from CoinData import Exchanges as Ex
+from CoinData import Plots as Pl
+from CoinData import Unpack as Up
 
 
 def binanceCandlePlot():
-
 
     # Here we show how to take data from binance
 
@@ -16,13 +18,12 @@ def binanceCandlePlot():
     startDate = '2017-12-23 00:00:00'
 
     # Then we make the date into binance Timestamp(Unix epoch +3 0s at the end)
-    since = bnc.date2Timestamp(startDate)
+    since = Tc.date2Timestamp(startDate)
 
     # Then we specify the ammount of data we want(max 500 min 3)
 
     limit = 40
-    ohlcv = bnc.getOhlcv(symbol,timeframe,since,limit)
-
+    ohlcv = Ex.getBinanceOhlcv(symbol, timeframe, since, limit)
     # All the data in ohlcv have default values that can be used(check CoinData/Exchanges.py)
 
     # Now that we have ohlcv we can use it
@@ -33,26 +34,26 @@ def binanceCandlePlot():
 
     # Give it title
     title = "ETH and BTC"
-    bnc.candlestickPlot(ohlcv, title)
+    Pl.candlestickPlot(ohlcv, title)
 
 
 def binancePlots():
 
     # Let's make some basic plots now with our binance plotter
     # As before we get our ohlcv
-    ohlcv = bnc.getOhlcv(limit=100, timeframe='15m')
+    ohlcv = Ex.getBinanceOhlcv(symbol='BTC/USDT', limit=100, timeframe='15m')
 
     # Now we are going to extract from ohlcv every subarray (component)
-    timestamp = bnc.getTimestamp(ohlcv)
-    openPrice = bnc.getOpen(ohlcv)
-    high = bnc.getHigh(ohlcv)
-    low = bnc.getLow(ohlcv)
-    close = bnc.getClose(ohlcv)
-    volume = bnc.getVolume(ohlcv)
+    timestamp = Up.getTimestamp(ohlcv)
+    openPrice = Up.getOpen(ohlcv)
+    high = Up.getHigh(ohlcv)
+    low = Up.getLow(ohlcv)
+    close = Up.getClose(ohlcv)
+    volume = Up.getVolume(ohlcv)
 
     # We are now plotting each different subbaray based on time
-    bnc.timeDataPlot(timestamp, openPrice)
-    bnc.timeDataPlot(timestamp, high)
-    bnc.timeDataPlot(timestamp, low)
-    bnc.timeDataPlot(timestamp, close)
-    bnc.timeDataPlot(timestamp, volume)
+    Pl.timeDataPlot(timestamp, openPrice)
+    Pl.timeDataPlot(timestamp, high)
+    Pl.timeDataPlot(timestamp, low)
+    Pl.timeDataPlot(timestamp, close)
+    Pl.timeDataPlot(timestamp, volume)
