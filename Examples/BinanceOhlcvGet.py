@@ -20,7 +20,7 @@ def binanceCandlePlot():
     # Then we make the date into binance Timestamp(Unix epoch +3 0s at the end)
     since = Tc.date2Timestamp(startDate)
 
-    # Then we specify the ammount of data we want(max 500 min 3)
+    # Then we specify the ammount of data we want(max 500 min 2)
 
     limit = 40
     ohlcv = Ex.getBinanceOhlcv(symbol, timeframe, since, limit)
@@ -57,3 +57,4 @@ def binancePlots():
     Pl.timeDataPlot(timestamp, low)
     Pl.timeDataPlot(timestamp, close)
     Pl.timeDataPlot(timestamp, volume)
+

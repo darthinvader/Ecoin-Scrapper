@@ -50,7 +50,7 @@ def date2Epoch(date):
 
 # date2Timestamp
 # Arguments:
-# return the timestamps in the format of Year-Month-Day Hour-Minute-Seconds
+#  return the timestamps in the format of Year-Month-Day Hour-Minute-Seconds
 
 
 def date2Timestamp(date):
@@ -61,6 +61,16 @@ def date2Timestamp(date):
 # unixEpoch2Date
 # takes a unixEpoch and returns it into string dates
 
+
 def unixEpoch2Date(timestamp):
+    dates = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+    return dates
+
+
+# unixEpoch2Dates
+# takes a unixEpoch and returns it into string dates
+
+
+def unixEpoch2Dates(timestamp):
     dates = [datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S') for x in timestamp]
     return dates
