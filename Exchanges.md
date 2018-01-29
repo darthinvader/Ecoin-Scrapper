@@ -1,15 +1,17 @@
 ###This is a file for all the different exchanges i have checked and my comments for them
 
-
+####The Winners are 
 - [x] Binance is good.
-- [x] Gdax is good but ohlcv is returned backwards (first timestamp is nearest)
-- [x] bitfinex seems to work on 2 minute intervals
-- [x] Kraken is very good and fast.
 - [x] bitmex is ok.First timestamp is not in minute but probably close to 20 seconds(must Check more).VERY FAST!!!!
-- [x] Kucoin seems ok but you must specify end date because if you don't then it returns future timestamps with nothing
-- [x] bittrex is ok but seems to lose the first data (API Seems bad but we will see how it works)
-- [x] HitBTC v2 is ok and fast
-- [x] OKEX seems ok
+- [x] bitfinex seems to work on 2 minute intervals
+
+####The losers are
+- [x] HitBTC v2 is ok and fast (Doesnt have old data)
+- [x] bittrex is ok but seems to lose the first data (API Seems bad but we will see how it works)(doesnt seem to give past data)
+- [x] OKEX seems ok 9cannot get old data)
+- [x] Kucoin seems ok but you must specify end date because if you don't then it returns future timestamps with nothing(requires api key)
+- [x] Kraken is very good and fast.Cant take past data
+- [x] Gdax is good but ohlcv is returned backwards (first timestamp is nearest) (also downloading past data doesnt work)
 - [ ] GetBTC uses above 1minute timeframes
 - [ ] Poloniex cannot pull less than 5m and first data is corrupted (You have to specify date)
 - [ ] Gatecoin is bad and ohlcv is returned backwards and their data are not updated every minute (USELESS)

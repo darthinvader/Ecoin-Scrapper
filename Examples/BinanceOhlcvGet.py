@@ -18,7 +18,7 @@ def binanceCandlePlot():
     startDate = '2017-12-23 00:00:00'
 
     # Then we make the date into binance Timestamp(Unix epoch +3 0s at the end)
-    since = Tc.date2Timestamp(startDate)
+    since = Tc.date2Timestamps(startDate)
 
     # Then we specify the ammount of data we want(max 500 min 2)
 

@@ -48,13 +48,22 @@ def date2Epoch(date):
     return timestamp
 
 
+# date2Timestamps
+# Arguments:
+#  return the timestamps in the format of Year-Month-Day Hour-Minute-Seconds
+
+
+def date2Timestamps(date):
+    timestamp = [(time.mktime(datetime.strptime(x, '%Y-%m-%d %H:%M:%S').timetuple()))*1000 for x in date]
+    return timestamp
+
 # date2Timestamp
 # Arguments:
 #  return the timestamps in the format of Year-Month-Day Hour-Minute-Seconds
 
 
 def date2Timestamp(date):
-    timestamp = [(time.mktime(datetime.strptime(x, '%Y-%m-%d %H:%M:%S').timetuple()))*1000 for x in date]
+    timestamp = int(time.mktime(datetime.strptime(date, '%Y-%m-%d %H:%M:%S').timetuple())*1000)
     return timestamp
 
 

@@ -18,9 +18,12 @@ timing = ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '
 
 def getBinanceOhlcv(symbol='BTC/USDT', timeframe='1m', since=None, limit=500):
     exchange = ccxt.binance()
+
     ohlcv = exchange.fetch_ohlcv(symbol, timeframe, since, limit)
+
     timestamp = Up.getTimestamp(ohlcv)
     timestamp = Tc.timestamp2UnixEpoch(timestamp)
+
     size = len(ohlcv)
     for i in range(0, size):
         ohlcv[i][0] = timestamp[i]
@@ -37,7 +40,7 @@ def getBinanceStartingDate(symbol='BTC/USDT'):
     timestamp = Tc.date2Timestamp(date1)
     since = timestamp
     ohlcv = getBinanceOhlcv(since=since, symbol=symbol, limit=1)
-    startDate = ohlcv[0][0]
+    startDate = ohlcv[0][0]*1000
     return startDate
 
 # getOhlcv
@@ -69,7 +72,9 @@ def BinanceData(symbol='BTC/USDT', timeframe='1m'):
     startTimestamp = getBinanceStartingDate(symbol)
     currTimestamp = startTimestamp
     ohlcv = []
+
     flag = True
+
     while flag:
         currOhlcv = getBinanceOhlcv(symbol=symbol, since=currTimestamp, timeframe=timeframe)
         ohlcv.extend(currOhlcv)
