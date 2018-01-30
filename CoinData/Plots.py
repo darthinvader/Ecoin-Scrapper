@@ -23,6 +23,7 @@ def scatterPlot(close1, close2, xlabel="", ylabel="", title="Correlation Plot", 
     plt.title(title)
     plt.show()
 
+
 # formatMake is a function used for Plots
 # not to be used from outside
 # it takes the timestamp and returns the format in which the date is shown
@@ -30,13 +31,34 @@ def scatterPlot(close1, close2, xlabel="", ylabel="", title="Correlation Plot", 
 
 def formatMake(ohlcv):
     timeframes = len(ohlcv)
-    timedif = ohlcv[0][0] - ohlcv[1][0]
+    timedif = ohlcv[1][0] - ohlcv[0][0]
     timeline = timedif * timeframes
+    print(timeline)
     if timeline <= 86400:  # 1440 = 24 hours * 60 minutes *60 seconds
         dateFormat = '%H:%M'
-    elif timeline <= 2592000:  # 43200 = 30 days *24 hours *60 minutes *60 seconds
+    elif timeline <= 172800:  # 2592000 = 24 hours *60 minutes *60 seconds
         dateFormat = '%dd %Hh'
-    elif timeline <= 31104000:  # 518400 = 12 * 30 days *24 hours *60 minutes *60seconds
+    elif timeline <= 864000:  # 31104000 = 5 days *24 hours *60 minutes *60seconds
+        dateFormat = '%m-%d'
+    else:
+        dateFormat = '%Y-%m-%d'
+    return dateFormat
+
+# formatMake is a function used for Plots
+# not to be used from outside
+# it takes the ohlcv and returns the format in which the date is shown
+
+
+def formatMakeTimestamp(timestamp):
+    timeframes = len(timestamp)
+    timedif = timestamp[1] - timestamp[0]
+    timeline = timedif * timeframes
+    print(timeline)
+    if timeline <= 86400:  # 1440 = 24 hours * 60 minutes *60 seconds
+        dateFormat = '%H:%M'
+    elif timeline <= 172800:  # 2592000 = 24 hours *60 minutes *60 seconds
+        dateFormat = '%dd %Hh'
+    elif timeline <= 864000:  # 31104000 = 5 days *24 hours *60 minutes *60seconds
         dateFormat = '%m-%d'
     else:
         dateFormat = '%Y-%m-%d'
@@ -74,9 +96,9 @@ def candlestickPlot(ohlcv, title="stock"):
 
 
 def timeDataPlot(timestamp, data):
-    dateFormat = formatMake(timestamp)
+    dateFormat = formatMakeTimestamp(timestamp)
     ax1 = plt.subplot2grid((1, 1), (0, 0))
-    timestamp = Tc.timestamp2Num(timestamp)
+    timestamp = mdates.epoch2num(timestamp)
     ax1.xaxis.set_major_formatter(mdates.DateFormatter(dateFormat))
     ax1.plot(timestamp, data)
     plt.show()

@@ -20,3 +20,16 @@ BNBPairs = ['ICX','NEO','VEN','CMT','ADX','WTC','CND','XLM','LTC','IOTA','BCH','
             'LSK','WABI','BAT','OST','RDN','PIVX','BCPT','BRD','XZC','TRIG','DLT','NAV','RLC','WAVES','MCO']
 
 
+FileName = 'Binance'
+USDTsize = len(USDTPairs)
+BTCsize = len(BTCPairs)
+ETHsize = len(ETHPairs)
+BNBsize = len(BNBPairs)
+
+USDTpostfix = 'USDT'
+BTCpostfix = 'BTC'
+ETHpostfix = 'ETH'
+BNBpostfix = 'BNB'
+
+
+

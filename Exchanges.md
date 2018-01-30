@@ -2,8 +2,8 @@
 
 ####The Winners are 
 - [x] Binance is good.
-- [x] bitmex is ok.First timestamp is not in minute but probably close to 20 seconds(must Check more).VERY FAST!!!!
-- [x] bitfinex seems to work on 2 minute intervals
+- [x] bitfinex is very good as it seems And Very Fast
+- [x] bitmex is ok.First timestamp is not in minute but probably close to 20 seconds(must Check more) Fast(their trading is weird and maybe their data will be too?will check last).
 
 ####The losers are
 - [x] HitBTC v2 is ok and fast (Doesnt have old data)

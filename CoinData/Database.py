@@ -67,16 +67,10 @@ def ohclvForDatabase(ohlcv):
     return ohlcv
 
 
-# addPopulateTable
-# This function will create a table and will populate it with the data
-# if the table already exists nothing will happen
-
-def updateTable(tableName, exchangeName,ohlcv):
+def getMaxTimestamp(tableName,exchangeName):
     conn = sqlite3.connect(exchangeName)
     c = conn.cursor()
-
-    query = 'SELECT MAX(timestamp) FROM' + tableName
-
+    query = 'SELECT MAX(timestamp) FROM ' + tableName
     c.execute(query)
     data = c.fetchall()
     print(data)
