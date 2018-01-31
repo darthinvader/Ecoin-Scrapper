@@ -1,6 +1,7 @@
 import ccxt
 from CoinData import TimeConvert as Tc
 from CoinData import Unpack as Up
+from CoinData import Database as Db
 import time
 
 timeJump = [60, 180, 300, 900, 1800, 3600, 7200, 14400, 21600, 28800, 43200, 86400, 259200, 604800, 2592000]
@@ -97,8 +98,18 @@ def getBinanceOhlcv(symbol='BTC/USDT', timeframe='1m', since=None, limit=500):
 
 
 def BinanceData(symbol='BTC/USDT', timeframe='1m', startTimestamp=''):
-    ohlcv = getAllData(ccxt.binance(), symbol, timeframe, startTimestamp, 1)
+    ohlcv = getAllData(ccxt.binance(), symbol, timeframe, startTimestamp,0)
     return ohlcv
+
+# getBinanceMarket
+# returns all the different markets of binance
+
+
+def getBinanceMarket():
+    exchange = ccxt.binance()
+    t = exchange.fetch_markets()
+    return t
+
 
 # getBitmexOhlcv
 # Arguments:
@@ -127,3 +138,28 @@ def getBitfinexOhlcv(symbol='BTC/USD', timeframe='1m', since=None, limit=500):
 def BifinexData(symbol='BTC/USD', timeframe='1m', startTimestamp=''):
     ohlcv = getAllData(ccxt.bitfinex2(), symbol, timeframe, startTimestamp, 3)
     return ohlcv
+
+
+def DbMake(exchange=ccxt.binance(), symbol='BTC/USDT', timeframe='1m', startTimestamp='', waiting=0, fileName='Binance.db'):
+    tableName = symbol.replace('/', '', 1)
+
+    if startTimestamp == '':
+        startTimestamp = getStartingDate(exchange, symbol)
+        print("it is null")
+    currTimestamp = startTimestamp
+
+    print(currTimestamp)
+
+    flag = True
+
+    while flag:
+        ohlcv = getOhlcv(exchange, symbol=symbol, since=currTimestamp, timeframe=timeframe, limit=500)
+        if len(ohlcv) < 500:
+            print('what?')
+            break
+        Db.addOhlcv2Table2(tableName, fileName, ohlcv)
+        currTimestamp = advanceTimestamp(ohlcv[499][0], timeframe=timeframe)
+        time.sleep(waiting)
+    ohlcv[:-1]
+    if len(ohlcv != 0):
+        Db.addOhlcv2Table2(tableName, fileName, ohlcv)

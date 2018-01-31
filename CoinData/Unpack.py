@@ -58,13 +58,3 @@ def getClose(ohlcv):
 def getVolume(ohlcv):
     volume = [x[5] for x in ohlcv]
     return volume
-
-# tupleOhlcv2Ohlcv
-# take a tuple ohlcv (a list of tuples)
-# and converts its into an original ohlcv (a list of lists)
-# this works when pulling data from the database instead of the sites
-
-
-def tupleOhlcv2Ohlcv(data):
-    k = [list(x) for x in data]
-    return k

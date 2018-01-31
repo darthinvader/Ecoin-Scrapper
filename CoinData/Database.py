@@ -48,8 +48,29 @@ def getTable2Ohlcv(tableName, exchangeName, query=''):
 
     query = 'SELECT * FROM ' + tableName
     c.execute(query)
+
     data = c.fetchall()
-    return data
+    ohlcv = tuple2Ohlcv(data)
+
+    c.close()
+    conn.close()
+
+    return ohlcv
+
+
+def addOhlcv2Table2(tableName, exchangeName, ohlcv):
+    conn = sqlite3.connect(exchangeName)
+    c = conn.cursor()
+
+    data = ohlcv2Tuples(ohlcv)
+
+    query = 'INSERT INTO ' + tableName + ' (timestamp, open, high, low, close, volume) VALUES (?, ?, ?, ?, ?, ?)'
+    c.executemany(query, data)
+    conn.commit()
+
+    c.close()
+    conn.close()
+
 
 # ohclvForDatabase
 # takes the ohlcv and transforms its timestamp to the Unix Epoch
@@ -70,7 +91,27 @@ def ohclvForDatabase(ohlcv):
 def getMaxTimestamp(tableName,exchangeName):
     conn = sqlite3.connect(exchangeName)
     c = conn.cursor()
+
     query = 'SELECT MAX(timestamp) FROM ' + tableName
     c.execute(query)
+
     data = c.fetchall()
-    print(data)
+    return data
+
+# ohlcv2Tuples
+# input an ohlcv and converts it to ohlcv but instead of list it makes it tuples
+
+
+def ohlcv2Tuples(ohlcv):
+    tuples = [tuple(l) for l in ohlcv]
+    return tuples
+
+# tupleOhlcv2Ohlcv
+# take a tuple ohlcv (a list of tuples)
+# and converts its into an original ohlcv (a list of lists)
+# this works when pulling data from the database instead of the sites
+
+
+def tuple2Ohlcv(data):
+    k = [list(x) for x in data]
+    return k
