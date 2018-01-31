@@ -10,7 +10,6 @@ timing = ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '
 
 def getOhlcv(exchange=ccxt.binance(), symbol='BTC/USDT', timeframe='1m', since=None, limit=500):
     ohlcv = exchange.fetch_ohlcv(symbol=symbol, timeframe=timeframe, since=since, limit=limit)
-
     timestamp = Up.getTimestamp(ohlcv)
     timestamp = Tc.timestamp2UnixEpoch(timestamp)
 
@@ -42,8 +41,6 @@ def getStartingDate(exchange=ccxt.binance(), symbol='BTC/USDT'):
 def advanceTimestamp(lastDate, timeframe='1m',):
     if timeframe in timing:
         index = timing.index(timeframe)
-        print(index)
-        print(lastDate)
         timestamp = (lastDate + timeJump[index])*1000
         return timestamp
     else:
@@ -56,9 +53,7 @@ def advanceTimestamp(lastDate, timeframe='1m',):
 def getAllData(exchange=ccxt.binance(), symbol='BTC/USDT', timeframe='1m', startTimestamp='', waiting=0):
     if startTimestamp == '':
         startTimestamp = getStartingDate(exchange, symbol)
-        print("it is null")
     currTimestamp = startTimestamp
-    print(currTimestamp)
     ohlcv = []
 
     flag = True
@@ -67,7 +62,6 @@ def getAllData(exchange=ccxt.binance(), symbol='BTC/USDT', timeframe='1m', start
         currOhlcv = getOhlcv(exchange, symbol=symbol, since=currTimestamp, timeframe=timeframe, limit=500)
         ohlcv.extend(currOhlcv)
         if len(currOhlcv) < 500:
-            print('what?')
             break
         currTimestamp = advanceTimestamp(currOhlcv[499][0], timeframe=timeframe)
         time.sleep(waiting)
@@ -145,21 +139,21 @@ def DbMake(exchange=ccxt.binance(), symbol='BTC/USDT', timeframe='1m', startTime
 
     if startTimestamp == '':
         startTimestamp = getStartingDate(exchange, symbol)
-        print("it is null")
-    currTimestamp = startTimestamp
+    else:
+        index = timing.index(timeframe)
+        startTimestamp = (startTimestamp + timeJump[index]* 1000)
 
-    print(currTimestamp)
+    currTimestamp = startTimestamp
 
     flag = True
 
     while flag:
         ohlcv = getOhlcv(exchange, symbol=symbol, since=currTimestamp, timeframe=timeframe, limit=500)
         if len(ohlcv) < 500:
-            print('what?')
             break
         Db.addOhlcv2Table2(tableName, fileName, ohlcv)
         currTimestamp = advanceTimestamp(ohlcv[499][0], timeframe=timeframe)
         time.sleep(waiting)
-    ohlcv[:-1]
-    if len(ohlcv != 0):
+    ohlcv = ohlcv[:-1]
+    if len(ohlcv) != 0:
         Db.addOhlcv2Table2(tableName, fileName, ohlcv)

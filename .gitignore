@@ -5924,3 +5924,5 @@ CoinData/__pycache__/Binance\.cpython-36\.pyc
 CoinData/__pycache__/getters\.cpython-36\.pyc
 
 CoinData/__pycache__/
+
+*.db

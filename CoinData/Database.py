@@ -96,7 +96,7 @@ def getMaxTimestamp(tableName,exchangeName):
     c.execute(query)
 
     data = c.fetchall()
-    return data
+    return data[0][0]
 
 # ohlcv2Tuples
 # input an ohlcv and converts it to ohlcv but instead of list it makes it tuples
