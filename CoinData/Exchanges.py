@@ -141,19 +141,24 @@ def DbMake(exchange=ccxt.binance(), symbol='BTC/USDT', timeframe='1m', startTime
         startTimestamp = getStartingDate(exchange, symbol)
     else:
         index = timing.index(timeframe)
-        startTimestamp = (startTimestamp + timeJump[index]* 1000)
+        startTimestamp = (startTimestamp + timeJump[index] * 1000)
 
     currTimestamp = startTimestamp
 
     flag = True
 
     while flag:
-        ohlcv = getOhlcv(exchange, symbol=symbol, since=currTimestamp, timeframe=timeframe, limit=500)
-        if len(ohlcv) < 500:
+        try:
+            ohlcv = getOhlcv(exchange, symbol=symbol, since=currTimestamp, timeframe=timeframe, limit=1000)
+        except:
+            print('waiting')
+            time.sleep(80)
+            continue
+        time.sleep(waiting)
+        if len(ohlcv) < 1000:
             break
         Db.addOhlcv2Table2(tableName, fileName, ohlcv)
-        currTimestamp = advanceTimestamp(ohlcv[499][0], timeframe=timeframe)
-        time.sleep(waiting)
+        currTimestamp = advanceTimestamp(ohlcv[999][0], timeframe=timeframe)
     ohlcv = ohlcv[:-1]
     if len(ohlcv) != 0:
         Db.addOhlcv2Table2(tableName, fileName, ohlcv)
