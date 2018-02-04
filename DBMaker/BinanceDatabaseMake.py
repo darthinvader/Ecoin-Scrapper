@@ -33,6 +33,7 @@ for k in market:
 for q in quotes:
     for b in Pairs[q]:
         tableName = b+q
+        print(tableName)
         symbol = b + '/' + q
         Db.createNewTable(tableName, fileName)
         timestamp = Db.getMaxTimestamp(tableName, fileName)

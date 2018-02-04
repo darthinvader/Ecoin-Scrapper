@@ -15,7 +15,7 @@ BTCPairs = ['ETH', 'XRP', 'EOS', 'BCH', 'IOTA', 'LTC', 'OMG', 'ETC', 'XMR', 'DAS
 
 ETHPairs = ['EOS', 'BCH', 'IOTA', 'NEO', 'OMG', 'ETP', 'QTUM', 'SAN', 'SNT',
             'GNT', 'EDO', 'YYW', 'BAT', 'AVT', 'SPK', 'DAT', 'TRX', 'ELF', 'ZRX', 'TNB', 'RCN', 'FUN', 'MNA',
-            'AID', 'REP', 'S    NG', 'RLC']  ##,'QASH'
+            'AID', 'REP', 'SNG', 'RLC']  ##,'QASH'
 
 fileName = 'Bitfinex.db'
 
@@ -48,8 +48,8 @@ for q in quotes:
         Db.createNewTable(tableName, fileName)
         timestamp = Db.getMaxTimestamp(tableName, fileName)
         if timestamp is None:
-            Ex.DbMake(exchange=ccxt.bitfinex2(), symbol=symbol, timeframe='1m', fileName=fileName, waiting=2.9)
+            Ex.DbMake(exchange=ccxt.bitfinex2(), symbol=symbol, timeframe='1m', fileName=fileName, waiting=2.95)
         else:
             Ex.DbMake(exchange=ccxt.bitfinex2(), symbol=symbol, timeframe='1m', startTimestamp=timestamp * 1000
-                      , fileName=fileName, waiting=2.9)
+                      , fileName=fileName, waiting=2.95)
 
