@@ -88,7 +88,7 @@ def ohclvForDatabase(ohlcv):
     return ohlcv
 
 
-def getMaxTimestamp(tableName,exchangeName):
+def getMaxTimestamp(tableName, exchangeName):
     conn = sqlite3.connect(exchangeName)
     c = conn.cursor()
 
@@ -96,6 +96,8 @@ def getMaxTimestamp(tableName,exchangeName):
     c.execute(query)
 
     data = c.fetchall()
+    if data is None:
+        return None
     return data[0][0]
 
 # ohlcv2Tuples
