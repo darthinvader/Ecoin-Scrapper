@@ -96,6 +96,10 @@ def getMaxTimestamp(tableName, exchangeName):
     c.execute(query)
 
     data = c.fetchall()
+
+    c.close()
+    conn.close()
+
     if data is None:
         return None
     return data[0][0]
