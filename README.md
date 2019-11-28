@@ -8,8 +8,7 @@ Special Libraries: python-binance (needs installation of this:http://landinghub.
 
 
 ## ToDo List:
-- [ ] Sql Integration for storing of Data.
+- [x] Sql Integration for storing of Data.
 - [x] Test all the exchanges for Data check.
-- [ ] Reformat Binance, Unpack, Plot Libraries before pushing.
-- [ ] Test the integration and store lots of Data
-- [ ] Add GPU CUDA for quick analysis of Data.
+- [x] Reformat Binance, Unpack, Plot Libraries before pushing.
+- [x] Test the integration and store lots of Data
