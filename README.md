@@ -1,4 +1,4 @@
-# MoneyMaker
+# Ecoin-Scrapper
 This is a cryptocurrency scrapper. It works by taking the data of different websites (eg. binance) through the ccxt library. It automatically calculates delays to take as many as possible data without causing a rejection from the target website. It then stores those timeseries data into a database controlled through sqlite3.
 
 Libraries:matlibplot,ccxt,
